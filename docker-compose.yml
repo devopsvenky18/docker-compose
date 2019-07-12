@@ -1,18 +1,28 @@
-version: "2"
+version: '2'
+
 services:
-  
-jenkins:
-    
-image: jenkinsci/blueocean
-    
-user: root
-    
-ports:
-      - "8080:8080"
-      - "8443:8443"
-      - "50000:50000"
-    
+
+  wordpress:
+    image: wordpress
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: example
+      WORDPRESS_DB_PASSWORD: examplePW
+    volumes:
+      - ./wordpress-data:/var/www/html
+
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: examplerootPW
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: example
+      MYSQL_PASSWORD: examplePW
+    volumes:
+      - mysql-data:/var/lib/mysql
+
 volumes:
-      - ./jenkins_data:/var/jenkins_home
-      - ./home:/home
-      - /var/run/docker.sock:/var/run/docker.sock
+mysql-data:
